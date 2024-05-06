@@ -1,104 +1,112 @@
 #include <iostream>
-#include <cctype> 
+#include <cctype>
 using namespace std;
 //structure for the university
-struct uni{
-string name;
-int num_staff;
-int num_student;
-
+struct uni {
+    string name;
+    int num_staff;
+    int num_student;
 };
 // Class representing the personnel of the university
-class personnel{
-    private:
-string name;
-int age;
-string id;
-string address;
-string email;
-    public:
+class personnel {
+private:
+    string name;
+    int age;
+    string id;
+    string address;
+    string email;
+public:
 //Constructor
-personnel(string n, int a,string id,string ad,string em){
-    name = n;
-    age = a;
-    address = ad;
-    email = em;
-    id = id;
+    personnel(string n, int a, string id, string ad, string em) {
+        name = n;
+        age = a;
+        address = ad;
+        email = em;
+        this->id = id;
     }
      //Saving data in arrays
-    void store_data(){
-    string data[4] = {name,id,address,email};
-}
+    void store_data() {
+        string data[4] = {name, id, address, email};
+    }
 // Print out the details of the personnel 
-    void print(){
-        cout<<"Name: "<<name<<endl;
-        cout<<"Age: "<<age<<endl;
-        cout<<"id: "<<id<<endl;
-        cout<<"address: "<<address<<endl;
-        cout<<"email: "<<email<<endl;
-}
+    void print() {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "id: " << id << endl;
+        cout << "address: " << address << endl;
+        cout << "email: " << email << endl;
+    }
 // Destructor for releasing resources when the personnel object is destroyed
-~personnel() {
-        cout << "Destructor for personnel class called" << endl;}
+    ~personnel() {
+        cout << "Destructor for personnel class called" << endl;
+    }
 };
 // Class representing the students of the university, it is a child class
 class Student: public personnel {
-    private:
+private:
     int year;
     int grade;
-    int cureent_year = 2024;
-    public:
+    int current_year = 2024;
+public:
     //Constructor
-    Student(string n, int a,string ad,string em,string id, int y,double g):personnel(n,a,ad,em,id){
+    Student(string n, int a, string ad, string em, string id, int y, double g):personnel(n, a, ad, em, id) {
         year = y;
         grade = g;
     }
     // Print out the details of the student
-    void print(){
+    void print() {
         personnel::print();
-        cout<<"year your in: "<<cureent_year - year<<endl;
-        cout<<"your grade: "<<grade<<endl;
+        cout << "Year you're in: " << current_year - year << endl;
+        cout << "Your grade: " << grade << endl;
     }
     //Saving data in arrays
-    void store_data(){
-        int num_data[2] = {year,grade};
-
+    void store_data() {
+        int num_data[2] = {year, grade};
     }
     // Destructor for releasing resources when the student object is destroyed
     ~Student() {
-        cout << "Destructor for personnel class called" << endl;}
+        cout << "Destructor for Student class called" << endl;
+    }
 };
 // Class representing the staff of the university, it is a child class
-class Staff: public personnel{
+class Staff: public personnel {
 private:
-int hours;
-int Salary;
-string status; //full time or part time
+    int hours;
+    int salary;
+    string status;//full time or part time
 
 public:
 //Constructor
-Staff (string n, int a,string ad,string em,string id,int h, int s,string st):personnel(n,a,ad,em,id){
-    hours = h;
-    Salary = s;
-    status = st;
-}
+    Staff(string n, int a, string ad, string em, string id, int h, int s, string st):personnel(n, a, ad, em, id) {
+        hours = h;
+        salary = s;
+        status = st;
+    }
 // Destructor for releasing resources when the staff object is destroyed
     ~Staff() {
         cout << "Destructor for Staff class called" << endl;
     }
 //Saving data in arrays
-void store_data(){
-    string data[1] = {status};
-    int num_data[3] = {hours,Salary};
-}
+    void store_data() {
+        string data[1] = {status};
+        int num_data[2] = {hours, salary};
+    }
 // Print out the details of the staff
-void print(){
+    void print() {
         personnel::print();
-        cout<<"hours this month: "<<hours<<endl;
-        cout<<"Your salary: "<<Salary<<endl;
-        cout<<"You are a: "<<status<<endl;
+        cout << "Hours this month: " << hours << endl;
+        cout << "Your salary: " << salary << endl;
+        cout << "You are a: " << status << endl;
     }
 };
+
+string toLowerCase(const string& str) {
+    string result;
+    for (char c : str) {
+        result += tolower(c);
+    }
+    return result;
+}
 //check integar function
 bool isInteger(const string& str) {
     for (char c : str) {
@@ -109,35 +117,19 @@ bool isInteger(const string& str) {
     }
     return true;
 }
-    string toLowerCase(const string& str) {
-    string result;
-    for (char c : str) {
-        result += tolower(c);
-    }
-    return result;
 
-}
-
-int staff_or_student(){
+int staff_or_student() {
     string response;
-    bool student = false;
-    bool staff = false;
-string answer;
-// Loop until the user enters a valid response (either "staff" or "student")
-while (answer != "staff" && answer != "student"){
-//Asking the user for input
-    cout<<"Staff or Student?: "; 
-    cin>>response;
-    answer = toLowerCase(response);}
+    string answer;
+    // Loop until the user enters a valid response (either "staff" or "student")
+    while (answer != "staff" && answer != "student") {
+        //Asking the user for input
+        cout << "Staff or Student?: ";
+        cin >> response;
+        answer = toLowerCase(response);
+    }
     // Validate that the input is either "staff" or "student"
-    if (answer== "staff"){
-       staff = true;
-    }
-    else if (answer == "student")
-    {
-        student = true;
-    }
-     if (answer == "staff") {
+    if (answer == "staff") {
         string name;
         string age_str;
         int age;
@@ -189,6 +181,7 @@ while (answer != "staff" && answer != "student"){
         Staff staf(name, age, id, address, email, hours, salary, status);
         staf.print();
     }
+
     if (answer == "student") {
         string name;
         string age_str;
@@ -229,14 +222,14 @@ while (answer != "staff" && answer != "student"){
         st1.print();
     }
     return 0;
-};
-int main() {
+}
 
-staff_or_student();
-uni Ismailia_National_University;
-Ismailia_National_University.name = "New Ismailia National University";
-Ismailia_National_University.num_staff = 1;
-Ismailia_National_University.num_student = 1;
-cout<<"University name: "<<Ismailia_National_University.name;
+int main() {
+    staff_or_student();
+    uni Ismailia_National_University;
+    Ismailia_National_University.name = "New Ismailia National University";
+    Ismailia_National_University.num_staff = 1;
+    Ismailia_National_University.num_student = 1;
+    cout << "University name: " << Ismailia_National_University.name;
     return 0;
 }

@@ -99,6 +99,16 @@ void print(){
         cout<<"You are a: "<<status<<endl;
     }
 };
+//check integar function
+bool isInteger(const string& str) {
+    for (char c : str) {
+        if (!isdigit(c)) {
+            cout << "Invalid input! Please enter a valid number." << endl;
+            return false;
+        }
+    }
+    return true;
+}
     string toLowerCase(const string& str) {
     string result;
     for (char c : str) {
@@ -127,67 +137,96 @@ while (answer != "staff" && answer != "student"){
     {
         student = true;
     }
-    if (staff){
+     if (answer == "staff") {
         string name;
-int age;
-string id;
-string address;
-string email;
-int hours;
-int Salary;
-string status;
-// Prompting the user to enter their data
-cout<<"Please enter your name: "<<endl;
-cin>>name;
-cout<<"Please enter your age: "<<endl;
-cin>>age;
-cout<<"Please enter your id: "<<endl;
-cin>>id;
-cout<<"Please enter your address: "<<endl;
-cin>>address;
-cout<<"Please enter your email: "<<endl;
-cin>>email;
-cout<<"Please enter hours worked this month: "<<endl;
-cin>>hours;
-cout<<"Please enter your salary: "<<endl;
-cin>>Salary;
+        string age_str;
+        int age;
+        string id;
+        string address;
+        string email;
+        string hours_str;
+        int hours;
+        string salary_str;
+        int salary;
+        string status;
 
-    if (hours>30){
-        status = "Full_time";
-    }
-    else{
-        status = "Part_time";
-    }
-        Staff staf(name,age,id,address,email,hours,Salary,status);
-        // Print the details of the staff member
+        cout << "Please enter your name: ";
+        cin >> name;
+        cout << "Please enter your age: ";
+        cin >> age_str;
+        while (!isInteger(age_str)) {
+            cout << "Please enter a valid age: ";
+            cin >> age_str;
+        }
+        age = stoi(age_str);
+        cout << "Please enter your id: ";
+        cin >> id;
+        cout << "Please enter your address: ";
+        cin >> address;
+        cout << "Please enter your email: ";
+        cin >> email;
+        cout << "Please enter hours worked this month: ";
+        cin >> hours_str;
+        while (!isInteger(hours_str)) {
+            cout << "Please enter a valid number of hours: ";
+            cin >> hours_str;
+        }
+        hours = stoi(hours_str);
+        cout << "Please enter your salary: ";
+        cin >> salary_str;
+        while (!isInteger(salary_str)) {
+            cout << "Please enter a valid salary: ";
+            cin >> salary_str;
+        }
+        salary = stoi(salary_str);
+
+        if (hours > 30) {
+            status = "Full_time";
+        } else {
+            status = "Part_time";
+        }
+    //print the details of the staff func
+        Staff staf(name, age, id, address, email, hours, salary, status);
         staf.print();
     }
-    if (student){
-string name;
-int age;
-string id;
-string address;
-string email;
-int year;
-double grade;
-// Prompting the user to enter their data
-cout<<"Please enter your name: "<<endl;
-cin>>name;
-cout<<"Please enter your age: "<<endl;
-cin>>age;
-cout<<"Please enter your id: "<<endl;
-cin>>id;
-cout<<"Please enter your address: "<<endl;
-cin>>address;
-cout<<"Please enter your email: "<<endl;
-cin>>email;
-cout<<"Please enter year of joining the university: "<<endl;
-cin>>year;
-cout<<"Please enter your grade: "<<endl;
-cin>>grade;
-        Student st1(name,age,id,address,email,year,grade);
-        st1.print();
+    if (answer == "student") {
+        string name;
+        string age_str;
+        int age;
+        string id;
+        string address;
+        string email;
+        string year_str;
+        int year;
+        double grade;
 
+        cout << "Please enter your name: ";
+        cin >> name;
+        cout << "Please enter your age: ";
+        cin >> age_str;
+        while (!isInteger(age_str)) {
+            cout << "Please enter a valid age: ";
+            cin >> age_str;
+        }
+        age = stoi(age_str);
+        cout << "Please enter your id: ";
+        cin >> id;
+        cout << "Please enter your address: ";
+        cin >> address;
+        cout << "Please enter your email: ";
+        cin >> email;
+        cout << "Please enter year of joining the university: ";
+        cin >> year_str;
+        while (!isInteger(year_str)) {
+            cout << "Please enter a valid year: ";
+            cin >> year_str;
+        }
+        year = stoi(year_str);
+        cout << "Please enter your grade: ";
+        cin >> grade;
+
+        Student st1(name, age, id, address, email, year, grade);
+        st1.print();
     }
     return 0;
 };

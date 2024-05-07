@@ -1,13 +1,16 @@
 #include <iostream>
 #include <cctype>
+#include <fstream>
 using namespace std;
-//structure for the university
+
+// Structure to represent a university
 struct uni {
     string name;
     int num_staff;
     int num_student;
 };
-// Class representing the personnel of the university
+
+// Base class representing personnel
 class personnel {
 private:
     string name;
@@ -16,7 +19,7 @@ private:
     string address;
     string email;
 public:
-//Constructor
+    // Constructor to initialize personnel data
     personnel(string n, int a, string id, string ad, string em) {
         name = n;
         age = a;
@@ -24,74 +27,126 @@ public:
         email = em;
         this->id = id;
     }
-     //Saving data in arrays
-    void store_data() {
-        string data[4] = {name, id, address, email};
+
+    // Accessor function to get personnel ID
+    string getId() const {
+        return id;
     }
-// Print out the details of the personnel 
+
+    // Function to store personnel data in a file
+    void store_data(ofstream& myfile) {
+        // Store personnel data in the file
+        myfile << "Name: " << name << endl;
+        myfile << "Age: " << age << endl;
+        myfile << "ID: " << id << endl;
+        myfile << "Address: " << address << endl;
+        myfile << "Email: " << email << endl;
+    }
+
+    // Function to print personnel data
     void print() {
         cout << "Name: " << name << endl;
         cout << "Age: " << age << endl;
-        cout << "id: " << id << endl;
-        cout << "address: " << address << endl;
-        cout << "email: " << email << endl;
+        cout << "ID: " << id << endl;
+        cout << "Address: " << address << endl;
+        cout << "Email: " << email << endl;
     }
-// Destructor for releasing resources when the personnel object is destroyed
+
+    // Destructor
     ~personnel() {
         cout << "Destructor for personnel class called" << endl;
     }
 };
-// Class representing the students of the university, it is a child class
+
+// Class representing a student, inheriting from personnel
 class Student: public personnel {
 private:
     int year;
-    int grade;
+    double grade;
     int current_year = 2024;
 public:
-    //Constructor
+    // Constructor to initialize student data
     Student(string n, int a, string ad, string em, string id, int y, double g):personnel(n, a, ad, em, id) {
         year = y;
         grade = g;
     }
-    // Print out the details of the student
+
+    // Function to print student data
     void print() {
         personnel::print();
         cout << "Year you're in: " << current_year - year << endl;
         cout << "Your grade: " << grade << endl;
     }
-    //Saving data in arrays
+
+    // Function to store student data 
     void store_data() {
-        int num_data[2] = {year, grade};
+        // Open the file for writing
+        ofstream MyFile("data.txt", ios::app);
+        if (MyFile.is_open()) {
+            // Call base class method to store personnel data
+            personnel::store_data(MyFile);
+            
+            // Store staff-specific data in the file
+            MyFile << "student.\n";
+            MyFile << "your are in year: " << year <<"out of 5 years"<< endl;
+            MyFile << "grade: " << grade << endl;
+
+            cout << "Data saved in data.txt" << endl;
+            MyFile.close(); // Close the file
+        } else {
+            cout << "Unable to open file for writing!" << endl;
+        }
     }
-    // Destructor for releasing resources when the student object is destroyed
+    
+
+    // Destructor
     ~Student() {
         cout << "Destructor for Student class called" << endl;
     }
 };
-// Class representing the staff of the university, it is a child class
+
+// Class representing a staff member, inheriting from personnel(Child class)
 class Staff: public personnel {
 private:
     int hours;
     int salary;
-    string status;//full time or part time
+    string status;
 
 public:
-//Constructor
+    // Constructor to initialize staff data
     Staff(string n, int a, string ad, string em, string id, int h, int s, string st):personnel(n, a, ad, em, id) {
         hours = h;
         salary = s;
         status = st;
     }
-// Destructor for releasing resources when the staff object is destroyed
+
+    // Destructor
     ~Staff() {
         cout << "Destructor for Staff class called" << endl;
     }
-//Saving data in arrays
+
+    // Function to store staff data in a file
     void store_data() {
-        string data[1] = {status};
-        int num_data[2] = {hours, salary};
+        // Open the file for writing 
+        ofstream MyFile("data.txt", ios::app);
+        if (MyFile.is_open()) {
+            // Call base class method to store personnel data
+            personnel::store_data(MyFile);
+            
+            // Store staff-specific data in the file
+            MyFile << "Staff.\n";
+            MyFile << "Hours worked: " << hours << endl;
+            MyFile << "Salary: " << salary << endl;
+            MyFile << "Status: " << status << endl;
+
+            cout << "Data saved in data.txt" << endl;
+            MyFile.close(); 
+        } else {
+            cout << "Unable to open file for writing!" << endl;
+        }
     }
-// Print out the details of the staff
+
+    // Function to print staff data
     void print() {
         personnel::print();
         cout << "Hours this month: " << hours << endl;
@@ -100,6 +155,7 @@ public:
     }
 };
 
+// Function to convert a string to lowercase
 string toLowerCase(const string& str) {
     string result;
     for (char c : str) {
@@ -107,7 +163,8 @@ string toLowerCase(const string& str) {
     }
     return result;
 }
-//check integar function
+
+// Function to check if a string represents an integer
 bool isInteger(const string& str) {
     for (char c : str) {
         if (!isdigit(c)) {
@@ -118,18 +175,18 @@ bool isInteger(const string& str) {
     return true;
 }
 
+// Function to interactively create a staff member or a student
 int staff_or_student() {
     string response;
     string answer;
-    // Loop until the user enters a valid response (either "staff" or "student")
     while (answer != "staff" && answer != "student") {
-        //Asking the user for input
         cout << "Staff or Student?: ";
         cin >> response;
         answer = toLowerCase(response);
     }
-    // Validate that the input is either "staff" or "student"
+
     if (answer == "staff") {
+        // Prompt user for staff details
         string name;
         string age_str;
         int age;
@@ -172,17 +229,29 @@ int staff_or_student() {
         }
         salary = stoi(salary_str);
 
+        // Determine staff status based on hours worked
         if (hours > 30) {
             status = "Full_time";
         } else {
             status = "Part_time";
         }
-    //print the details of the staff func
+
+        // Create Staff object and store data
         Staff staf(name, age, id, address, email, hours, salary, status);
         staf.print();
+        cout << "Save data? (y/n): ";
+        string save;
+        cin >> save;
+        save = toLowerCase(save);
+        if (save == "y") {
+            staf.store_data();
+        } else {
+            cout << "Data not saved" << endl;
+        }
     }
 
     if (answer == "student") {
+        // Prompt user for student details
         string name;
         string age_str;
         int age;
@@ -218,18 +287,34 @@ int staff_or_student() {
         cout << "Please enter your grade: ";
         cin >> grade;
 
+        // Create Student object and print data
         Student st1(name, age, id, address, email, year, grade);
         st1.print();
+
+        cout << "Save data? (y/n): ";
+        string save;
+        cin >> save;
+        save = toLowerCase(save);
+        if (save == "y") {
+            st1.store_data();
+        } else {
+            cout << "Data not saved" << endl;
+        }
     }
     return 0;
 }
 
 int main() {
+    // Call function to interactively create staff or student
     staff_or_student();
+
+    // Create a university object
     uni Ismailia_National_University;
     Ismailia_National_University.name = "New Ismailia National University";
     Ismailia_National_University.num_staff = 1;
     Ismailia_National_University.num_student = 1;
+
+    // Print university name
     cout << "University name: " << Ismailia_National_University.name;
     return 0;
 }

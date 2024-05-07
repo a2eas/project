@@ -88,8 +88,8 @@ public:
             
             // Store staff-specific data in the file
             MyFile << "student.\n";
-            MyFile << "your are in year: " << year <<"out of 5 years"<< endl;
-            MyFile << "grade: " << grade << endl;
+            MyFile << "your are in year: " << year <<" out of 5 years"<< endl;
+            MyFile << "grade: " << grade <<endl<<"///////////////////"<< endl;
 
             cout << "Data saved in data.txt" << endl;
             MyFile.close(); // Close the file
@@ -137,7 +137,7 @@ public:
             MyFile << "Staff.\n";
             MyFile << "Hours worked: " << hours << endl;
             MyFile << "Salary: " << salary << endl;
-            MyFile << "Status: " << status << endl;
+            MyFile << "Status: " << status <<endl<<"///////////////////"<< endl;
 
             cout << "Data saved in data.txt" << endl;
             MyFile.close(); 

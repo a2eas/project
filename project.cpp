@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cctype>
 #include <fstream>
+#include <sstream>
+#include <string>
 using namespace std;
 
 // Structure to represent a university
@@ -18,6 +20,7 @@ private:
     string id;
     string address;
     string email;
+
 public:
     // Constructor to initialize personnel data
     personnel(string n, int a, string id, string ad, string em) {
@@ -34,7 +37,7 @@ public:
     }
 
     // Function to store personnel data in a file
-    void store_data(ofstream& myfile) {
+    void store_data(ofstream& myfile) const {
         // Store personnel data in the file
         myfile << "Name: " << name << endl;
         myfile << "Age: " << age << endl;
@@ -44,7 +47,7 @@ public:
     }
 
     // Function to print personnel data
-    void print() {
+    void print() const {
         cout << "Name: " << name << endl;
         cout << "Age: " << age << endl;
         cout << "ID: " << id << endl;
@@ -63,7 +66,7 @@ class Student: public personnel {
 private:
     int year;
     double grade;
-    int current_year = 2024;
+
 public:
     // Constructor to initialize student data
     Student(string n, int a, string ad, string em, string id, int y, double g):personnel(n, a, ad, em, id) {
@@ -72,32 +75,23 @@ public:
     }
 
     // Function to print student data
-    void print() {
+    void print() const {
         personnel::print();
-        cout << "Year you're in: " << current_year - year << endl;
+        cout << "Year you're in: " << 2024 - year << endl;
         cout << "Your grade: " << grade << endl;
     }
 
-    // Function to store student data 
-    void store_data() {
-        // Open the file for writing
-        ofstream MyFile("data.txt", ios::app);
-        if (MyFile.is_open()) {
-            // Call base class method to store personnel data
-            personnel::store_data(MyFile);
-            
-            // Store staff-specific data in the file
-            MyFile << "student.\n";
-            MyFile << "your are in year: " << year <<" out of 5 years"<< endl;
-            MyFile << "grade: " << grade <<endl<<"///////////////////"<< endl;
+    // Function to store student data
+    void store_data(ofstream& myfile) const {
+        // Call base class method to store personnel data
+        personnel::store_data(myfile);
 
-            cout << "Data saved in data.txt" << endl;
-            MyFile.close(); // Close the file
-        } else {
-            cout << "Unable to open file for writing!" << endl;
-        }
+        // Store student-specific data in the file
+        myfile << "Student.\n";
+        myfile << "Year you're in: " << year << endl;
+        myfile << "Grade: " << grade << endl;
+        myfile << "///////////////////" << endl;
     }
-    
 
     // Destructor
     ~Student() {
@@ -105,7 +99,7 @@ public:
     }
 };
 
-// Class representing a staff member, inheriting from personnel(Child class)
+// Class representing a staff member, inheriting from personnel
 class Staff: public personnel {
 private:
     int hours;
@@ -126,28 +120,20 @@ public:
     }
 
     // Function to store staff data in a file
-    void store_data() {
-        // Open the file for writing 
-        ofstream MyFile("data.txt", ios::app);
-        if (MyFile.is_open()) {
-            // Call base class method to store personnel data
-            personnel::store_data(MyFile);
-            
-            // Store staff-specific data in the file
-            MyFile << "Staff.\n";
-            MyFile << "Hours worked: " << hours << endl;
-            MyFile << "Salary: " << salary << endl;
-            MyFile << "Status: " << status <<endl<<"///////////////////"<< endl;
+    void store_data(ofstream& myfile) const {
+        // Call base class method to store personnel data
+        personnel::store_data(myfile);
 
-            cout << "Data saved in data.txt" << endl;
-            MyFile.close(); 
-        } else {
-            cout << "Unable to open file for writing!" << endl;
-        }
+        // Store staff-specific data in the file
+        myfile << "Staff.\n";
+        myfile << "Hours worked: " << hours << endl;
+        myfile << "Salary: " << salary << endl;
+        myfile << "Status: " << status << endl;
+        myfile << "///////////////////" << endl;
     }
 
     // Function to print staff data
-    void print() {
+    void print() const {
         personnel::print();
         cout << "Hours this month: " << hours << endl;
         cout << "Your salary: " << salary << endl;
@@ -158,7 +144,8 @@ public:
 // Function to convert a string to lowercase
 string toLowerCase(const string& str) {
     string result;
-    for (char c : str) {
+    for (size_t i = 0; i < str.size(); ++i) {
+        char c = str[i];
         result += tolower(c);
     }
     return result;
@@ -166,8 +153,8 @@ string toLowerCase(const string& str) {
 
 // Function to check if a string represents an integer
 bool isInteger(const string& str) {
-    for (char c : str) {
-        if (!isdigit(c)) {
+    for (size_t i = 0; i < str.size(); ++i) {
+        if (!isdigit(str[i])) {
             cout << "Invalid input! Please enter a valid number." << endl;
             return false;
         }
@@ -176,7 +163,7 @@ bool isInteger(const string& str) {
 }
 
 // Function to interactively create a staff member or a student
-int staff_or_student() {
+void staff_or_student() {
     string response;
     string answer;
     while (answer != "staff" && answer != "student") {
@@ -207,7 +194,7 @@ int staff_or_student() {
             cout << "Please enter a valid age: ";
             cin >> age_str;
         }
-        age = stoi(age_str);
+        istringstream(age_str) >> age;
         cout << "Please enter your id: ";
         cin >> id;
         cout << "Please enter your address: ";
@@ -220,14 +207,14 @@ int staff_or_student() {
             cout << "Please enter a valid number of hours: ";
             cin >> hours_str;
         }
-        hours = stoi(hours_str);
+        istringstream(hours_str) >> hours;
         cout << "Please enter your salary: ";
         cin >> salary_str;
         while (!isInteger(salary_str)) {
             cout << "Please enter a valid salary: ";
             cin >> salary_str;
         }
-        salary = stoi(salary_str);
+        istringstream(salary_str) >> salary;
 
         // Determine staff status based on hours worked
         if (hours > 30) {
@@ -237,14 +224,22 @@ int staff_or_student() {
         }
 
         // Create Staff object and store data
-        Staff staf(name, age, id, address, email, hours, salary, status);
+        Staff staf(name, age, address, email, id, hours, salary, status);
         staf.print();
         cout << "Save data? (y/n): ";
         string save;
         cin >> save;
         save = toLowerCase(save);
         if (save == "y") {
-            staf.store_data();
+            // Open the file for writing
+            ofstream MyFile("data.txt", ios::app);
+            if (MyFile.is_open()) {
+                staf.store_data(MyFile);
+                cout << "Data saved in data.txt" << endl;
+                MyFile.close(); // Close the file
+            } else {
+                cout << "Unable to open file for writing!" << endl;
+            }
         } else {
             cout << "Data not saved" << endl;
         }
@@ -270,7 +265,7 @@ int staff_or_student() {
             cout << "Please enter a valid age: ";
             cin >> age_str;
         }
-        age = stoi(age_str);
+        istringstream(age_str) >> age;
         cout << "Please enter your id: ";
         cin >> id;
         cout << "Please enter your address: ";
@@ -283,12 +278,12 @@ int staff_or_student() {
             cout << "Please enter a valid year: ";
             cin >> year_str;
         }
-        year = stoi(year_str);
+        istringstream(year_str) >> year;
         cout << "Please enter your grade: ";
         cin >> grade;
 
         // Create Student object and print data
-        Student st1(name, age, id, address, email, year, grade);
+        Student st1(name, age, address, email, id, year, grade);
         st1.print();
 
         cout << "Save data? (y/n): ";
@@ -296,12 +291,19 @@ int staff_or_student() {
         cin >> save;
         save = toLowerCase(save);
         if (save == "y") {
-            st1.store_data();
+            // Open the file for writing
+            ofstream MyFile("data.txt", ios::app);
+            if (MyFile.is_open()) {
+                st1.store_data(MyFile);
+                cout << "Data saved in data.txt" << endl;
+                MyFile.close(); // Close the file
+            } else {
+                cout << "Unable to open file for writing!" << endl;
+            }
         } else {
             cout << "Data not saved" << endl;
         }
     }
-    return 0;
 }
 
 int main() {

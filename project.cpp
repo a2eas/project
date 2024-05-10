@@ -260,8 +260,9 @@ void staff_or_student() {
         double grade;
 
         cout << "Please enter your name: ";
-        cin.ignore();
-        cin>> name:
+        cout << "Please enter your name: ";
+        cin.ignore(); // Ignore the newline character left by previous cin
+        getline(cin, name); // Use getline for name
         cout << "Please enter your age: ";
         cin >> age_str;
         while (!isInteger(age_str)) {
@@ -322,6 +323,4 @@ int main() {
     Ismailia_National_University.num_student = 1;
 
     // Print university name
-    cout << "University name: " << Ismailia_National_University.name;
-    return 0;
-}
+    cout << "University name: " << Ismailia_National_Universi

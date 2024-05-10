@@ -69,7 +69,7 @@ private:
 
 public:
     // Constructor to initialize student data
-    Student(string n, int a, string id, string ad, string em, int y, double g):personnel(n, a,id,ad,em) {
+    Student(string n, int a, string ad, string em, string id, int y, double g):personnel(n, a, ad, em, id) {
         year = y;
         grade = g;
     }
@@ -108,7 +108,7 @@ private:
 
 public:
     // Constructor to initialize staff data
-    Staff(string n, int a, string id, string ad, string em, int h, int s, string st):personnel(n, a, id, ad, em) {
+    Staff(string n, int a, string ad, string em, string id, int h, int s, string st):personnel(n, a, ad, em, id) {
         hours = h;
         salary = s;
         status = st;
@@ -226,7 +226,7 @@ void staff_or_student() {
         }
 
         // Create Staff object and store data
-        Staff staf(name, age, id, address, email,  hours, salary, status);
+        Staff staf(name, age, address, email, id, hours, salary, status);
         staf.print();
         cout << "Save data? (y/n): ";
         string save;
@@ -260,7 +260,6 @@ void staff_or_student() {
         double grade;
 
         cout << "Please enter your name: ";
-        cout << "Please enter your name: ";
         cin.ignore(); // Ignore the newline character left by previous cin
         getline(cin, name); // Use getline for name
         cout << "Please enter your age: ";
@@ -288,7 +287,7 @@ void staff_or_student() {
         cin >> grade;
 
         // Create Student object and print data
-        Student st1(name, age, id, address, email, year, grade);
+        Student st1(name, age, address, email, id, year, grade);
         st1.print();
 
         cout << "Save data? (y/n): ";
@@ -323,4 +322,6 @@ int main() {
     Ismailia_National_University.num_student = 1;
 
     // Print university name
-    cout << "University name: " << Ismailia_National_Universi
+    cout << "University name: " << Ismailia_National_University.name;
+    return 0;
+}

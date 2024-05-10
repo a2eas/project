@@ -69,7 +69,7 @@ private:
 
 public:
     // Constructor to initialize student data
-    Student(string n, int a, string ad, string em, string id, int y, double g):personnel(n, a, ad, em, id) {
+    Student(string n, int a, string id, string ad, string em, int y, double g):personnel(n, a,id,ad,em) {
         year = y;
         grade = g;
     }
@@ -108,7 +108,7 @@ private:
 
 public:
     // Constructor to initialize staff data
-    Staff(string n, int a, string ad, string em, string id, int h, int s, string st):personnel(n, a, ad, em, id) {
+    Staff(string n, int a, string id, string ad, string em, int h, int s, string st):personnel(n, a, id, ad, em) {
         hours = h;
         salary = s;
         status = st;
@@ -187,7 +187,8 @@ void staff_or_student() {
         string status;
 
         cout << "Please enter your name: ";
-        cin >> name;
+        cin.ignore(); // Ignore the newline character left by previous cin
+        getline(cin, name); // Use getline for name
         cout << "Please enter your age: ";
         cin >> age_str;
         while (!isInteger(age_str)) {
@@ -197,8 +198,9 @@ void staff_or_student() {
         istringstream(age_str) >> age;
         cout << "Please enter your id: ";
         cin >> id;
+        cin.ignore(); // Ignore the newline character left by previous cin
         cout << "Please enter your address: ";
-        cin >> address;
+        getline(cin, address); // Use getline for address
         cout << "Please enter your email: ";
         cin >> email;
         cout << "Please enter hours worked this month: ";
@@ -224,7 +226,7 @@ void staff_or_student() {
         }
 
         // Create Staff object and store data
-        Staff staf(name, age, address, email, id, hours, salary, status);
+        Staff staf(name, age, id, address, email,  hours, salary, status);
         staf.print();
         cout << "Save data? (y/n): ";
         string save;
@@ -258,7 +260,8 @@ void staff_or_student() {
         double grade;
 
         cout << "Please enter your name: ";
-        cin >> name;
+        cin.ignore(); // Ignore the newline character left by previous cin
+        getline(cin, name); // Use getline for name
         cout << "Please enter your age: ";
         cin >> age_str;
         while (!isInteger(age_str)) {
@@ -268,8 +271,9 @@ void staff_or_student() {
         istringstream(age_str) >> age;
         cout << "Please enter your id: ";
         cin >> id;
+        cin.ignore(); // Ignore the newline character left by previous cin
         cout << "Please enter your address: ";
-        cin >> address;
+        getline(cin, address); // Use getline for address
         cout << "Please enter your email: ";
         cin >> email;
         cout << "Please enter year of joining the university: ";
@@ -283,7 +287,7 @@ void staff_or_student() {
         cin >> grade;
 
         // Create Student object and print data
-        Student st1(name, age, address, email, id, year, grade);
+        Student st1(name, age, id, address, email, year, grade);
         st1.print();
 
         cout << "Save data? (y/n): ";
@@ -305,6 +309,7 @@ void staff_or_student() {
         }
     }
 }
+
 
 int main() {
     // Call function to interactively create staff or student

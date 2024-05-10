@@ -261,7 +261,7 @@ void staff_or_student() {
 
         cout << "Please enter your name: ";
         cin.ignore();
-        cin>>name:
+        cin>> name:
         cout << "Please enter your age: ";
         cin >> age_str;
         while (!isInteger(age_str)) {

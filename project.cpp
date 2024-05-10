@@ -69,7 +69,7 @@ private:
 
 public:
     // Constructor to initialize student data
-    Student(string n, int a, string ad, string em, string id, int y, double g):personnel(n, a, ad, em, id) {
+    Student(string n, int a, string id, string ad, string em, int y, double g):personnel(n, a, id ,ad, em) {
         year = y;
         grade = g;
     }
@@ -108,7 +108,7 @@ private:
 
 public:
     // Constructor to initialize staff data
-    Staff(string n, int a, string ad, string em, string id, int h, int s, string st):personnel(n, a, ad, em, id) {
+    Staff(string n, int a, string id, string ad, string em, int h, int s, string st):personnel(n, a, id ,ad, em)  {
         hours = h;
         salary = s;
         status = st;
@@ -226,7 +226,7 @@ void staff_or_student() {
         }
 
         // Create Staff object and store data
-        Staff staf(name, age, address, email, id, hours, salary, status);
+        Staff staf(name, age, id, address, email, hours, salary, status);
         staf.print();
         cout << "Save data? (y/n): ";
         string save;
@@ -287,7 +287,7 @@ void staff_or_student() {
         cin >> grade;
 
         // Create Student object and print data
-        Student st1(name, age, address, email, id, year, grade);
+        Student st1(name, age, id, address, email, year, grade);
         st1.print();
 
         cout << "Save data? (y/n): ";

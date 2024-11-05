@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.filedialog import askopenfilename
 from tkinter.ttk import Style
-alp = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 class app(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -25,6 +24,10 @@ class frmae(ttk.Frame):
         self.index_setter = 0
         self.list = []
         self.config(padding=10,style="My.TFrame")
+        self.save_btn = ttk.Button(command=self.save_text,text='Save')
+        self.save_btn.grid(column=1,row=0)
+        self.load_btn = ttk.Button(command=self.load_text,text='Load')
+        self.load_btn.grid(column=1,row=1)
         self.mainloop()
     def sort_list(self,list):
         new_list = sorted(list, key=str.lower,reverse=True)
@@ -41,6 +44,20 @@ class frmae(ttk.Frame):
             self.var = str(self.index_setter) + ' - ' + item
             self.text_List.insert(0,self.var)
             self.entry.delete(0,tk.END)
+    def save_text(self):
+        self.file_path = 'save1'
+        with open(self.file_path , 'w') as file:
+            for item in self.new_list:
+                file.write(item + '\n')
+    def load_text(self):
+        self.filename = askopenfilename()
+        self.filename = str(self.filename)
+        with open(self.filename , 'r') as file:
+            for item in file:
+                self.list.append(item)
+            self.command(self.list)
+            
+
 if __name__ == '__main__':
     appe = app()
     frame = frmae(appe)

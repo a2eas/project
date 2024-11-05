@@ -55,6 +55,7 @@ class frmae(ttk.Frame):
         with open(self.filename , 'r') as file:
             for item in file:
                 self.list.append(item)
+            self.list.remove(self.list[-1])
             self.command(self.list)
             
 
